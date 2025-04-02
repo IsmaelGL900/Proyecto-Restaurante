@@ -1,3 +1,9 @@
-.parte_arriba {
-    text-align: center;
+#parte_arriba {
+    color: white;
+    background-color: black;
+    font-family: "Road Rage", sans-serif;
+}
+
+.logo {
+    height: 10rem;
 }
