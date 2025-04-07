@@ -8,11 +8,17 @@
     height: 10rem;
 }
 
-body {
-    background-color: #ffdede;
+.eslogan {
+    padding-left: 5rem;
+    margin-left: 50rem;
+    color: darkred;
+    margin-top: 4rem;
+    background-color: lightgrey;
+    box-shadow: 1px 1px 30px black;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
 }
 
-.eslogan {
-    text-align: center;
-    margin-top: 5px;
+h2 {
+    font-family: "Road Rage", sans-serif;
 }
