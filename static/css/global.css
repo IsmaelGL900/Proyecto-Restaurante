@@ -9,5 +9,10 @@
 }
 
 body {
-    background-color: #ffbcbc;
+    background-color: #ffdede;
+}
+
+.eslogan {
+    text-align: center;
+    margin-top: 5px;
 }
