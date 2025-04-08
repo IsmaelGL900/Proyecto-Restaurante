@@ -11,4 +11,4 @@ def go_mesas_page(request):
     return render(request, 'mesas.html')
 
 def go_login_page(request):
-    return render(request, 'login.html')
+    return render(request, 'Login.html')
