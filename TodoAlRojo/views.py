@@ -12,3 +12,6 @@ def go_mesas_page(request):
 
 def go_login_page(request):
     return render(request, 'Login.html')
+
+def go_registrarse_page(request):
+    return render(request, 'Registrarse.html')

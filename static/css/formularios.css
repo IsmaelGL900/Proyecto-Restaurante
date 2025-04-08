@@ -1,10 +1,14 @@
-#body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-image: url(../Imagenes/fondo-formulario.jpg);
-    animation: moverfondo 100s linear infinite;
-    background-size: 800px;
+.form-container{
+     font-family: "Road Rage", sans-serif;
+        font-size: 30px;
+
 }
+
+.form-container h2{
+     font-family: "Road Rage", sans-serif;
+        font-size: 70px;
+
+}
+
+
+
