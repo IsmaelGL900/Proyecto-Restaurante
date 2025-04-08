@@ -1,0 +1,10 @@
+#body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url(../Imagenes/fondo-formulario.jpg);
+    animation: moverfondo 100s linear infinite;
+    background-size: 800px;
+}
