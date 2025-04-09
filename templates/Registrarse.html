@@ -48,17 +48,49 @@
 
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="********" required>
+                <div style="display: flex">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="********" required>
+                    <img id="toggleIcon" style="width: 2rem; cursor: pointer; margin-left: 5px  " onclick="ocultarContraseñas()" src="{% static 'Imagenes/ojo-cerrado.png' %}">
+                </div>      
             </div>
 
             <div class="mb-3">
                 <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="********" required>
+                <div style="display: flex">
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="********" required>
+                    <img id="toggleIcon2" style="width: 2rem; cursor: pointer; margin-left: 5px  " onclick="ocultarContraseñas2()" src="{% static 'Imagenes/ojo-cerrado.png' %}">
+                </div>      
             </div>
 
             <button type="submit" class="btn btn-danger w-100 mt-3">Registrarse</button>
         </form>
     </div>
+<script>
+     function ocultarContraseñas() {
+        const passwordInput = document.getElementById("password");
+      const toggleIcon = document.getElementById("toggleIcon");
 
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.src = "{% static 'Imagenes/ojo-abierto.png' %}";
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.src = "{% static 'Imagenes/ojo-cerrado.png' %}";
+      }
+    }
+    
+    function ocultarContraseñas2() {
+        const passwordInput = document.getElementById("confirm_password");
+      const toggleIcon = document.getElementById("toggleIcon2");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.src = "{% static 'Imagenes/ojo-abierto.png' %}";
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.src = "{% static 'Imagenes/ojo-cerrado.png' %}";
+      }
+    }
+</script>
 </body>
 </html>
