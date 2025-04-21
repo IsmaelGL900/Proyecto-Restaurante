@@ -15,3 +15,6 @@ def go_login_page(request):
 
 def go_registrarse_page(request):
     return render(request, 'Registrarse.html')
+
+def go_gestion_page(request):
+    return render(request, 'Gestion.html')

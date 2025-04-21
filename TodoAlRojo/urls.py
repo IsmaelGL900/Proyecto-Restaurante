@@ -8,4 +8,5 @@ urlpatterns = [
     path('mesas/', go_mesas_page, name='mesas'),
     path('home/login/', go_login_page, name="login"),
     path('home/login/registrarse/', go_registrarse_page, name="registrarse"),
+    path('gestion/', go_gestion_page, name="gestion"),
 ]
