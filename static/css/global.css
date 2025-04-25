@@ -12,8 +12,12 @@
     height: 10rem;
 }
 
-#body {
+body {
     background-color: #676767;
+}
+
+.light {
+    background-color: white;
 }
 
 .eslogan {
