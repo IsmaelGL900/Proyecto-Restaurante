@@ -17,7 +17,22 @@ body {
 }
 
 .light {
-    background-color: black;
+    background-color: #171717;
+}
+
+.light p {
+    color: black;
+}
+
+.light #parte_arriba {
+    color: black;
+    background-color: white;
+    font-family: "Road Rage", sans-serif;
+}
+
+.light #contactos {
+    color: black;
+    background-color: #b5b5b5;
 }
 
 .eslogan {
