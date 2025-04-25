@@ -12,12 +12,12 @@
     height: 10rem;
 }
 
-.body {
-    background-color: #a09b9c;
+body {
+    background-color: #959595;
 }
 
 .light {
-    background-color: white;
+    background-color: black;
 }
 
 .eslogan {
