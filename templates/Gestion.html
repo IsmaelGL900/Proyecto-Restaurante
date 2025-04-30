@@ -11,14 +11,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Road+Rage&display=swap" rel="stylesheet">
     <style>
-        body {
+        .body {
             background-image: url("{% static 'Imagenes/FondoDefuminadoBlancoNegro.png' %}");
+        }
+
+        .light {
+            background-image: url("{% static 'Imagenes/fondo-claro.jpeg' %}");
         }
     </style>
 </head>
-<body>
-    <div id="header" class="justify-content-evenly">
-        <img style="width: 10rem" src="{% static 'Imagenes/Logo Restaurante.png' %}">
+<body class="body">
+    <div id="header">
+        <img id="logo" src="{% static 'Imagenes/Logo Restaurante.png' %}">
+        <div id="switch" class="form-check form-switch">
+            <p id="interfaz">Oscuro / Claro</p>
+            <input style="width: 4rem;height: 2rem;margin-left: 1rem" class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+        </div>
     </div>
 
     <div id="content" class="justify-content-evenly">
@@ -56,4 +64,14 @@
 
     </div>
 </body>
+<script>
+     document.getElementById('switchCheckDefault').addEventListener('change',()=>{
+        if (document.body.className.indexOf('light')===-1) {
+            document.body.classList.add('light');
+        }
+        else {
+            document.body.classList.remove('light');
+        }
+    });
+</script>
 </html>

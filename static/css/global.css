@@ -8,16 +8,32 @@
     width: 30px;
 }
 
+#botonNavbar {
+    width: 110px;
+    height: 110px;
+    background-color: black;
+}
+
+#botonNavbar:hover {
+    background-color: lightgray;
+}
+
 .logo {
     height: 10rem;
 }
 
-body {
-    background-color: #959595;
+.body {
+    background-color: #635b5b;
+}
+
+#carrusel {
+    height: 30rem;
+    box-shadow: 1px 1px 70px white;
+    margin-top: 40px
 }
 
 .light {
-    background-color: #171717;
+    background-color: #cccccc;
 }
 
 .light p {
@@ -26,13 +42,44 @@ body {
 
 .light #parte_arriba {
     color: black;
-    background-color: white;
+    background-color: #ffffff;
     font-family: "Road Rage", sans-serif;
 }
 
+.light #carrusel {
+    height: 30rem;
+    box-shadow: 1px 1px 70px #000000;
+    margin-top: 40px
+}
+
 .light #contactos {
+    background-color: #bababa;
+    width: 80rem;
+    height: 14rem;
+    margin-top: 20rem;
+    box-shadow: 1px 1px 50px black;
     color: black;
-    background-color: #b5b5b5;
+    padding-top: 50px;
+    padding-left: 5%;
+}
+
+.light .eslogan {
+    margin-top: 4rem;
+    padding-left: 5rem;
+    margin-left: 50%;
+    color: #d30b0b;
+    background-color: #9c9c9c;
+    box-shadow: 1px 1px 50px #000000;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+.light #imagenRestaurante {
+    box-shadow: 1px 1px 50px #000000;
+    margin-top: 4rem;
+    width:  25rem;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .eslogan {
@@ -52,7 +99,6 @@ body {
     width:  25rem;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
-
 }
 
 #contactos {
