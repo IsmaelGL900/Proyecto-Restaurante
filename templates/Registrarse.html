@@ -41,6 +41,7 @@
 
         <form method="POST">
             {% csrf_token %}
+            {{ form.as_p }}
             <div class="mb-3">
                 <label for="email" class="form-label">Correo Electrónico</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="tuemail@ejemplo.com" required>
