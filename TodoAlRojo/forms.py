@@ -5,7 +5,7 @@ from .models import *
 class RegistroFormulario(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ['email', 'nombre', 'password']
+        fields = ['email', 'nombre' ,'password']
         widgets = {
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
@@ -21,7 +21,7 @@ class RegistroFormulario(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Contraseña',
                 'id': 'password'
-            }),
+            })
         }
 
 class LoginFormulario(AuthenticationForm):

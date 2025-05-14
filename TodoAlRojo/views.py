@@ -3,13 +3,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario
+from TodoAlRojo.models import Usuario
 
 
 def go_home_page(request):
     return render(request, 'home.html')
 
 def go_mesas_page(request):
-    return render(request, 'mesas.html')
+    return render(request, 'Mesas.html')
 
 def go_login_page(request):
     return render(request, 'Login.html')
@@ -20,16 +21,14 @@ def go_registrarse_page(request):
 def go_gestion_page(request):
     return render(request, 'Gestion.html')
 
-def go_loginCocinero_page(request):
-    return render(request, 'LoginCocinero.html')
+def go_GestionCocinero_page(request):
+    return render(request, 'GestionCocinero.html')
 
-def go_loginCamarero_page(request):
-    return render(request, 'LoginCamarero.html')
+def go_GestionCamarero_page(request):
+    return render(request, 'GestionCamarero.html')
 
-def go_loginAdministrador_page(request):
-    return render(request, 'LoginAdministrador.html')
-
-
+def go_GestionAdministrador_page(request):
+    return render(request, 'GestionAdmin.html')
 
 def registrar_usuario(request):
     form = RegistroFormulario()
@@ -39,7 +38,7 @@ def registrar_usuario(request):
             usuario_nuevo = form.save(commit=False)
             usuario_nuevo.set_password(form.cleaned_data['password'])
             usuario_nuevo.save()
-            return redirect( go_login_page )
+            return redirect( 'login' )
     else:
         return render(request,"Registrarse2.html", {'form':form})
 
@@ -54,16 +53,16 @@ def loguearse(request):
             if usuario is not None:
                 login(request, usuario)
 
-                rol = request.usuario.rol
+                rol = usuario.rol
 
                 if rol == 'cliente':
                     return redirect('home')
                 elif rol == 'admin':
-                    return redirect('admin')
+                    return redirect('GestionAdmin')
                 elif rol == 'camarero':
-                    return redirect('camarero')
+                    return redirect('GestionCamarero')
                 elif rol == 'cocinero':
-                    return redirect('cocinero')
+                    return redirect('GestionCocinero')
     else:
         return render(request, "Login2.html", {'form': form})
 
