@@ -1,16 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario
-from TodoAlRojo.models import Usuario
 
 
 def go_home_page(request):
     return render(request, 'home.html')
 
 def go_mesas_page(request):
-    return render(request, 'Mesas.html')
+    return render(request, 'mesas.html')
 
 def go_login_page(request):
     return render(request, 'Login.html')
@@ -30,6 +30,23 @@ def go_GestionCamarero_page(request):
 def go_GestionAdministrador_page(request):
     return render(request, 'GestionAdmin.html')
 
+#AUTENTIFICACIÓN
+def es_admin (usuario):
+    if not usuario.is_authenticated or not usuario.rol == 'admin':
+        raise PermissionDenied
+    return True
+
+def es_camarero (usuario):
+    if not usuario.is_authenticated or not usuario.rol == 'camarero' or not usuario.role == 'admin':
+        raise PermissionDenied
+    return True
+
+def es_cocinero (usuario):
+    if not usuario.is_authenticated or not usuario.rol == 'cocinero' or not usuario.role == 'admin':
+        raise PermissionDenied
+    return True
+
+#REGISTRO Y LOGIN
 def registrar_usuario(request):
     form = RegistroFormulario()
     if request.method == 'POST':
@@ -69,3 +86,10 @@ def loguearse(request):
 def logout_usuario(request):
     logout(request)
     return redirect('login')
+
+#ERRORES
+def error_403(request, exception=None):
+    return render(request, '403.html', status=403)
+
+def error_404(request, exception=None):
+    return render(request, '404.html', status=404)
