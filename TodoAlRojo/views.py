@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
+from TodoAlRojo.models import *
 
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario
 
@@ -29,6 +30,25 @@ def go_GestionCamarero_page(request):
 
 def go_GestionAdministrador_page(request):
     return render(request, 'GestionAdmin.html')
+
+#FUNCIONES
+def cargarTablaMesas(request):
+    mesas = Mesa.objects.all().order_by('numero')
+    return render(request, 'Mesas.html', {'mesas': mesas})
+
+
+def cambiar_estado(request, mesa_id):
+    mesa = get_object_or_404(Mesa, id=mesa_id)
+    mesa.estado = 'DISPONIBLE' if mesa.estado == 'OCUPADA' else 'OCUPADA'
+    mesa.save()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'nuevo_estado': mesa.estado,
+            'texto_estado': mesa.get_estado_display(),
+            'mesa_id': mesa_id
+        })
+    return redirect('mesas')
 
 #AUTENTIFICACIÓN
 def es_admin (usuario):

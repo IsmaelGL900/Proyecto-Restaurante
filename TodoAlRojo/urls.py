@@ -5,7 +5,8 @@ from .views import *
 
 urlpatterns = [
     path('', go_home_page , name="home"),
-    path('GestionCamarero/Mesas/', go_mesas_page, name='mesas'),
+    path('GestionCamarero/Mesas/', cargarTablaMesas, name='mesas'),
+    path('GestionCamarero/Mesas/cambiar-estado/<int:mesa_id>/', cambiar_estado, name='cambiar_estado'),
     path('login/', loguearse, name="login"),
     path('login/registrarse/',registrar_usuario, name="registrarse"),
     path('logout/', logout_usuario, name='logout'),

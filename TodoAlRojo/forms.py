@@ -22,6 +22,7 @@ class RegistroFormulario(forms.ModelForm):
                 'placeholder': 'Contraseña',
                 'id': 'password'
             })
+
         }
 
 class LoginFormulario(AuthenticationForm):
@@ -37,3 +38,4 @@ class LoginFormulario(AuthenticationForm):
             'placeholder': 'Contraseña',
             'id': 'password'
         })
+
