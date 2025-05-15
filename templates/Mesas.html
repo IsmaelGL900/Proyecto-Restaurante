@@ -71,7 +71,7 @@
 </head>
 <body class="body">
     <div id="header" class="justify-content-evenly">
-        <div id="home" onclick="window.location.href='GestionCamarero'"><button><img style="width: 8rem" src="{% static 'Imagenes/casa.png' %}"></button></div>
+        <div id="home" onclick="window.location.href='{% url 'GestionCamarero' %}'"><button><img style="width: 8rem" src="{% static 'Imagenes/casa.png' %}"></button></div>
         <div><img id="logo" src="{% static 'Imagenes/Logo Restaurante.png' %}"></div>
         <div id="switch" class="form-check form-switch">
             <p id="interfaz">Oscuro / Claro</p>
