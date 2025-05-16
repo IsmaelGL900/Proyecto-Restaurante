@@ -39,3 +39,74 @@ class LoginFormulario(AuthenticationForm):
             'id': 'password'
         })
 
+class RegistroAdminFormulario(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['email', 'nombre', 'rol', 'password']
+        widgets = {
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Correo',
+                'id': 'email'
+            }),
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre de Usuario',
+                'id': 'nombre'
+            }),
+            'rol': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Rol',
+                'id': 'rol'
+            }),
+            'password': forms.PasswordInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contraseña',
+                'id': 'password'
+            })
+        }
+
+class ProductoAdminFormulario(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = '__all__'
+        widgets = {
+            'imagen': forms.FileInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Imagen',
+                'id': 'imagen'
+            }),
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre de Producto',
+                'id': 'nombre'
+            }),
+            'precio': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Precio',
+                'id': 'precio'
+            }),
+            'tipo': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tipo',
+                'id': 'tipo'
+            })
+        }
+
+class MesaAdminFormulario(forms.ModelForm):
+    class Meta:
+        model = Mesa
+        fields = '__all__'
+        widgets = {
+            'numero': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Numero de Mesa',
+                'id': 'numero'
+            }),
+            'estado': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Estado',
+                'id': 'estado'
+            })
+        }
+
