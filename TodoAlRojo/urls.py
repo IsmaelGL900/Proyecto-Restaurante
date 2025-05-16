@@ -5,6 +5,9 @@ from .views import *
 
 urlpatterns = [
     path('', go_home_page , name="home"),
+    path('', logout_usuario, name="logout"),
+    path('home/', go_homeLogIn_page, name="home-login"),
+    path('home/carta', go_carta_page, name="carta"),
     path('GestionCamarero/Mesas/', cargarTablaMesas, name='mesas'),
     path('GestionCamarero/Mesas/cambiar-estado/<int:mesa_id>/', cambiar_estado, name='cambiar_estado'),
     path('login/', loguearse, name="login"),

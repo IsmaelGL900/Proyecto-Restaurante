@@ -10,6 +10,12 @@ from TodoAlRojo.forms import RegistroFormulario, LoginFormulario
 def go_home_page(request):
     return render(request, 'home.html')
 
+def go_homeLogIn_page(request):
+    return render(request, 'home-LogIn.html')
+
+def go_carta_page(request):
+    return render(request, 'Carta.html')
+
 def go_mesas_page(request):
     return render(request, 'mesas.html')
 
@@ -93,7 +99,7 @@ def loguearse(request):
                 rol = usuario.rol
 
                 if rol == 'cliente':
-                    return redirect('home')
+                    return redirect('home-login')
                 elif rol == 'admin':
                     return redirect('GestionAdmin')
                 elif rol == 'camarero':
@@ -105,7 +111,7 @@ def loguearse(request):
 
 def logout_usuario(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 #ERRORES
 def error_403(request, exception=None):

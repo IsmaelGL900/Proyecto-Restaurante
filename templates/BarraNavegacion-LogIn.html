@@ -32,13 +32,13 @@
                       <div class="offcanvas-body">
                           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                               <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href='{% url 'login' %}'><h3>Inicio <img class="iconosNavbar" src="{% static 'Imagenes/casa.png' %}" alt=""></h3></a>
+                                <a class="nav-link active" aria-current="page" href='{% url 'home-login' %}'><h3>Inicio <img class="iconosNavbar" src="{% static 'Imagenes/casa.png' %}" alt=""></h3></a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href='{% url 'login' %}'><h3>Carta <img class="iconosNavbar" src="{% static 'Imagenes/carta.png' %}" alt=""></h3></a>
+                                <a class="nav-link" href='{% url 'carta' %}'><h3>Carta <img class="iconosNavbar" src="{% static 'Imagenes/carta.png' %}" alt=""></h3></a>
                               </li>
                                <li class="nav-item">
-                                <a class="nav-link" href='{% url 'login' %}'><h3>Carrito <img class="iconosNavbar" src="{% static 'Imagenes/carrito-de-compras.png' %}" alt=""></h3></a>
+                                <a class="nav-link" href="{% url 'logout' %}"><h3>Cerrar Sesion <img class="iconosNavbar" src="{% static 'Imagenes/cerrar-sesion.png' %}" alt=""></h3></a>
                               </li>
                               <li class="nav-item">
                                     <h3><img class="iconosNavbar" src="{% static 'Imagenes/modo-oscuro.png' %}" alt="">  /  <img class="iconosNavbar" src="{% static 'Imagenes/modo-claro.png' %}" alt=""></h3>

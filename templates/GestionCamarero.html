@@ -18,11 +18,29 @@
         .light {
             background-image: url("{% static 'Imagenes/fondo-claro.jpeg' %}");
         }
+
+        #home {
+            border-radius: 30px;
+            padding: 1rem;
+            background-color: #efefef;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 1px 1px 100px white;
+        }
+        .light #home {
+            border-radius: 30px;
+            padding: 1rem;
+            background-color: #efefef;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 1px 1px 50px black;
+        }
     </style>
 </head>
 <body class="body">
-    <div id="header">
-        <img id="logo" src="{% static 'Imagenes/Logo Restaurante.png' %}">
+    <div id="header" class="justify-content-evenly">
+        <div id="home" onclick="window.location.href='{% url 'logout' %}'"><button><img style="width: 8rem" src="{% static 'Imagenes/cerrar-sesion.png' %}"></button></div>
+        <div><img id="logo" src="{% static 'Imagenes/Logo Restaurante.png' %}"></div>
         <div id="switch" class="form-check form-switch">
             <p id="interfaz">Oscuro / Claro</p>
             <input class="form-check-input " type="checkbox" role="switch" id="switchCheckDefault">
@@ -36,17 +54,17 @@
                     <h5 class="card-text text-center">Gestion de mesas del restaurante.</h5>
                     <br>
                     <div class="d-flex justify-content-evenly">
-                        <a href="Mesas" class="btn btn-dark btn-outline-danger"><h5>Administrar</h5></a>
+                        <a href='{% url 'mesas' %}' class="btn btn-dark btn-outline-danger"><h5>Administrar</h5></a>
                     </div>
                 </div>
         </div>
         <div class="card" style="width: 18rem; border-radius: 30px ">
                 <div class="bloque">
-                    <h2 class="card-title text-center">Camarero</h2>
-                    <h5 class="card-text text-center">Entra como camarero del restaurante.</h5>
+                    <h2 class="card-title text-center">Pedidos</h2>
+                    <h5 class="card-text text-center">Gestionar pedidos de los clientes.</h5>
                     <br>
                     <div class="d-flex justify-content-evenly">
-                        <a href="loginCamarero" class="btn btn-dark btn-outline-danger"><h5>Modo Camarero</h5></a>
+                        <a href="loginCamarero" class="btn btn-dark btn-outline-danger"><h5>Administrar</h5></a>
                     </div>
                 </div>
         </div>
