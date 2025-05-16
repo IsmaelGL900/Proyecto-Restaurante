@@ -56,6 +56,10 @@ def cambiar_estado(request, mesa_id):
         })
     return redirect('mesas')
 
+def cargar_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'Carta.html', {'productos': productos})
+
 #AUTENTIFICACIÓN
 def es_admin (usuario):
     if not usuario.is_authenticated or not usuario.rol == 'admin':

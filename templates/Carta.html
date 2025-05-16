@@ -10,10 +10,79 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Road+Rage&display=swap" rel="stylesheet">
+    <style>
+        .body {
+             background-image: url("{% static 'Imagenes/FondoDefuminadoBlancoNegro.png' %}");
+        }
+        .card{
+            background-color: #d8d0d0;
+            margin-top: 2.5rem;
+            width: 20rem;
+            border-radius: 30px;
+            padding: 1rem;
+            margin-left: 39%;
+            box-shadow: 1px 1px 30px white;
+        }
+        .titulos{
+            color: #dcdcdc;
+            text-align: center;
+            text-shadow: 5px 5px 10px red;
+            margin-top: 5rem;
+        }
+    </style>
 </head>
-<body>
+<body class="body">
     {% include "BarraNavegacion-LogIn.html" %}
-
+    <div style="margin-top: 2rem">
+        <h1 class="titulos">HAMBURGUESAS</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'HAMBURGUESA' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <h1 class="titulos">ENTRANTES</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'ENTRANTE' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <h1 class="titulos">BEBIDAS</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'BEBIDA' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <h1 class="titulos">POSTRES</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'POSTRE' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </body>
 </html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

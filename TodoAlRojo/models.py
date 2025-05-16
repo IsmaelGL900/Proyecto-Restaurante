@@ -61,6 +61,7 @@ class Producto(models.Model):
     tipo = models.CharField(max_length=50, choices=TIPOS_PRODUCTO)
     ingredientes = models.CharField(max_length=1000, null=True, blank=True)
 
+
     def __str__(self):
         return f"{self.nombre} - ${self.precio}"
 
