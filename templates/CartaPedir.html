@@ -12,14 +12,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Road+Rage&display=swap" rel="stylesheet">
     
     <style>
-        
-        
     </style>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
 </head>
 <body>
-
+    {% include "BarraNavegacion-LogIn.html" %}
+    <div id="centro">
+        <div id="izquierda">
+            <h1 class="titulos">HAMBURGUESAS</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'HAMBURGUESA' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                    <form action="{% url 'agregar_a_carrito' p.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Agregar al pedido</button>
+                    </form>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <h1 class="titulos">ENTRANTES</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'ENTRANTE' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                    <form action="{% url 'agregar_a_carrito' p.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Agregar al pedido</button>
+                    </form>                    
+                </div>
+            {% endif %}
+        {% endfor %}
+        <h1 class="titulos">BEBIDAS</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'BEBIDA' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                    <form action="{% url 'agregar_a_carrito' p.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Agregar al pedido</button>
+                    </form>                
+                </div>
+            {% endif %}
+        {% endfor %}
+        <h1 class="titulos">POSTRES</h1>
+        {% for p in productos %}
+            {% if p.tipo == 'POSTRE' %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h2>{{ p.nombre }}</h2>
+                        <h3 style="margin-left: 2rem">{{ p.precio }}€</h3>
+                    </div>
+                    <p>{{ p.ingredientes }}</p>
+                    <form action="{% url 'agregar_a_carrito' p.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Agregar al pedido</button>
+                    </form>                
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        <div id="derecha">
+            <h2>🛒 Tu Carrito</h2>
+            {% if carrito and carrito.items.all %}
+                {% for item in carrito.items.all %}
+                    <div class="card-pedido">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h4>{{ item.producto.nombre }}</h4>
+                            <p>{{ item.cantidad }} x {{ item.producto.precio }}€ = {{ item.subtotal }}€</p>
+                        </div>
+                        <form action="{% url 'eliminar_item_carrito' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                <hr>
+                <h4>Total: {{ carrito.total }}€</h4>
+            {% else %}
+                <p>Tu carrito está vacío.</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

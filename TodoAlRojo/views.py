@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from TodoAlRojo.models import *
-
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario
 
 
@@ -56,9 +56,44 @@ def cambiar_estado(request, mesa_id):
         })
     return redirect('mesas')
 
+#CARTA Y PEDIDOS
 def cargar_productos(request):
     productos = Producto.objects.all()
     return render(request, 'Carta.html', {'productos': productos})
+
+@login_required
+def carta(request):
+    productos = Producto.objects.all()
+    carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
+    return render(request, 'CartaPedir.html', {'productos': productos, 'carrito': carrito})
+
+@login_required
+def agregar_a_carrito(request, producto_id):
+    cliente = request.user
+    producto = get_object_or_404(Producto, id=producto_id)
+
+    # Busca o crea un carrito
+    carrito, creado = Carrito.objects.get_or_create(cliente=cliente, activo=True)
+
+    # Busca o crea un item dentro del carrito
+    item, item_creado = ItemCarrito.objects.get_or_create(
+        carrito=carrito,
+        producto=producto,
+        defaults={'cantidad': 1}
+    )
+
+    if not item_creado:
+        item.cantidad += 1
+        item.save()
+
+    return redirect('carta_pedir')
+
+@login_required
+def eliminar_item_carrito(request, item_id):
+    item = ItemCarrito.objects.get(id=item_id)
+    if item.carrito.cliente == request.user:
+        item.delete()
+    return redirect('carta_pedir')
 
 #AUTENTIFICACIÓN
 def es_admin (usuario):
