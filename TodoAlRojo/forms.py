@@ -54,8 +54,8 @@ class RegistroAdminFormulario(forms.ModelForm):
                 'placeholder': 'Nombre de Usuario',
                 'id': 'nombre'
             }),
-            'rol': forms.TextInput(attrs={
-                'class': 'form-control',
+            'rol': forms.Select(attrs={
+                'class': 'form-select',
                 'placeholder': 'Rol',
                 'id': 'rol'
             }),
