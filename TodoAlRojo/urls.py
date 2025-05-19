@@ -22,5 +22,6 @@ urlpatterns = [
     path('GestionCocinero/', go_GestionCocinero_page, name="GestionCocinero"),
     path('GestionCamarero/', go_GestionCamarero_page , name="GestionCamarero"),
     path('GestionAdministrador/', go_GestionAdministrador_page, name="GestionAdmin"),
-
+    path('GestionAdministrador/Cuentas/', go_cuentas_page, name="cuentas"),
+    path('GestionAdministrador/Cuentas/registrarse/',registrar_usuario_admin, name="registrarse_admin"),
 ]

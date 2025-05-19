@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from TodoAlRojo.models import *
-from TodoAlRojo.forms import RegistroFormulario, LoginFormulario
+from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario
 
 
 def go_home_page(request):
@@ -36,6 +36,10 @@ def go_GestionCamarero_page(request):
 
 def go_GestionAdministrador_page(request):
     return render(request, 'GestionAdmin.html')
+
+def go_cuentas_page(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'AdministrarCuentas.html',{'usuarios': usuarios})
 
 #FUNCIONES
 def cargarTablaMesas(request):
@@ -163,6 +167,17 @@ def registrar_usuario(request):
     else:
         return render(request,"Registrarse2.html", {'form':form})
 
+def registrar_usuario_admin(request):
+    form = RegistroAdminFormulario()
+    if request.method == 'POST':
+        form = RegistroAdminFormulario(request.POST)
+        if form.is_valid():
+            usuario_nuevo = form.save(commit=False)
+            usuario_nuevo.set_password(form.cleaned_data['password'])
+            usuario_nuevo.save()
+            return redirect( 'cuentas' )
+    else:
+        return render(request,"AdminRegistrar.html", {'form':form})
 def loguearse(request):
     form = LoginFormulario()
     if request.method == 'POST':

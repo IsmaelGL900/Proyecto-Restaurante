@@ -40,6 +40,15 @@
             margin-bottom: 1rem;
             box-shadow: 1px 1px 50px black;
         }
+
+        table {
+            border: solid black;
+            background-color: white;
+            border-radius: 10px;
+        }
+        table th {
+            padding: 1rem;
+        }
     </style>
 </head>
 <body class="body">
@@ -52,11 +61,32 @@
         </div>
     </div>
     <div class="cuerpo">
-        <div style="margin-left: 44%">
+        <div style="margin-left: 35%">
+            <table >
+                <thead>
+                    <tr>
+                        <th style="border-bottom: solid">Nombre</th>
+                        <th style="border-bottom: solid">Email</th>
+                        <th style="border-bottom: solid">Rol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for u in usuarios %}
+                    <tr>
+                        <th>{{ u.nombre }}</th>
+                        <th>{{ u.email }}</th>
+                        <th>{{ u.rol }}</th>
+                    </tr>
+                    <br>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-left: 44%; margin-top: 10rem; margin-bottom: 2rem">
             <a href="{% url 'registrarse_admin' %}">
                 <button class="btn btn-warning">Registrar Nueva Cuenta</button>
             </a>
-            
+
         </div>
     </div>
 </body>
