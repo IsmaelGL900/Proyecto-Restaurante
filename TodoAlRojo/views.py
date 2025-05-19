@@ -65,7 +65,8 @@ def cargar_productos(request):
 def carta(request):
     productos = Producto.objects.all()
     carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
-    return render(request, 'CartaPedir.html', {'productos': productos, 'carrito': carrito})
+    mesas = Mesa.objects.filter(estado='OCUPADA')
+    return render(request, 'CartaPedir.html', {'productos': productos, 'carrito': carrito, 'mesas': mesas})
 
 @login_required
 def agregar_a_carrito(request, producto_id):
@@ -94,6 +95,44 @@ def eliminar_item_carrito(request, item_id):
     if item.carrito.cliente == request.user:
         item.delete()
     return redirect('carta_pedir')
+
+@login_required
+def hacer_pedido(request):
+    if request.method == 'POST':
+        carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
+        mesa_id = request.POST.get('mesa_id')
+        mesa = get_object_or_404(Mesa, id=mesa_id)
+
+        if not carrito or not carrito.items.exists():
+            return redirect('cartapedir')
+
+        # Calcular total para el pedido
+        total_pedido = carrito.total
+
+        # Crear pedido con total
+        pedido = Pedido.objects.create(
+            cliente=request.user,
+            mesa=mesa,
+            total=total_pedido
+        )
+
+        # Copiar ítems al pedido
+        for item in carrito.items.all():
+            ItemPedido.objects.create(
+                pedido=pedido,
+                producto=item.producto,
+                cantidad=item.cantidad,
+                precio_unitario=item.producto.precio
+            )
+
+        # Vaciar y desactivar carrito
+        carrito.items.all().delete()
+        carrito.activo = False
+        carrito.save()
+
+        return redirect('carta_pedir')
+
+    return redirect('cartapedir')
 
 #AUTENTIFICACIÓN
 def es_admin (usuario):

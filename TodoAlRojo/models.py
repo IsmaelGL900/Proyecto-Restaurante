@@ -2,7 +2,6 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
-# Create your models here.
 #LOGIN Y REGISTRO--------------------------------------------------------------
 class UsuarioManager(BaseUserManager):
     def create_user(self, email, nombre, rol, password=None):
@@ -45,7 +44,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
         return f"{self.email} - {self.nombre} ({self.rol})"
 
 #LOGIN Y REGISTRO--------------------------------------------------------------
-
 
 class Producto(models.Model):
     TIPOS_PRODUCTO = [
@@ -109,8 +107,8 @@ class Pedido(models.Model):
 
     cliente = models.ForeignKey('Usuario', on_delete=models.CASCADE, limit_choices_to={'rol': 'cliente'}, related_name='pedidos_como_cliente')
     mesa = models.ForeignKey(Mesa, on_delete=models.CASCADE)
-    camarero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'camarero'}, on_delete= models.CASCADE, related_name='pedidos_como_camarero')
-    cocinero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'cocinero'}, on_delete= models.CASCADE, related_name='pedidos_como_cocinero')
+    camarero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'camarero'}, on_delete= models.CASCADE, related_name='pedidos_como_camarero', null=True, blank=True)
+    cocinero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'cocinero'}, on_delete= models.CASCADE, related_name='pedidos_como_cocinero', null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=50, choices=ESTADOS, default='PENDIENTE')
     total = models.DecimalField(max_digits=10, decimal_places=2)

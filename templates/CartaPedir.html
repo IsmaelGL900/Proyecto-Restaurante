@@ -169,7 +169,18 @@
                     {% endfor %}
                     <hr>
                     <h4>Total: {{ carrito.total }}€</h4>
-                    <button class="btn btn-success btn-sm">Hacer Pedido</button>
+                     <form method="post" action="{% url 'hacer_pedido' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="mesa_id">Selecciona una mesa:</label>
+                            <select class="form-select" style="margin-bottom: 5rem" id="mesa_id" name="mesa_id" required>
+                                {% for mesa in mesas %}
+                                   <option value="{{ mesa.id }}">Mesa {{ mesa.numero }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-sm">Hacer Pedido</button>
+                    </form>
                 {% else %}
                     <p>Tu carrito está vacío.</p>
                 {% endif %}

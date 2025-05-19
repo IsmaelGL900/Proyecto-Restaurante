@@ -8,9 +8,10 @@ urlpatterns = [
     path('', logout_usuario, name="logout"),
     path('home/', go_homeLogIn_page, name="home-login"),
     path('home/carta', cargar_productos, name="carta"),
-    path('cartapedir/', views.carta, name='carta_pedir'),
+    path('cartapedir/', carta, name='carta_pedir'),
     path('cartapedir/agregar-a-carrito/<int:producto_id>/', agregar_a_carrito, name='agregar_a_carrito'),
     path('cartapedir/eliminar-item-carrito/<int:item_id>/', eliminar_item_carrito, name='eliminar_item_carrito'),
+    path('hacer-pedido/', hacer_pedido, name='hacer_pedido'),
 
 
     path('GestionCamarero/Mesas/', cargarTablaMesas, name='mesas'),
