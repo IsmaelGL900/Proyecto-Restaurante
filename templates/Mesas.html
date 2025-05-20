@@ -92,9 +92,39 @@
         {% for mesa in mesas %}
             <div class="mesa {% if mesa.estado == 'DISPONIBLE' %}disponible{% else %}ocupada{% endif %}">
                 <h3>Mesa {{ mesa.numero }}</h3>
+
+                 <div class="total-mesa">
+                    <strong>Total acumulado:</strong>
+                    ${{ mesa.total_pedidos|default:"0"|floatformat:2 }}
+                </div>
+                <br>
                 <a href="{% url 'cambiar_estado' mesa.id %}" class="btn-estado {% if mesa.estado == 'DISPONIBLE' %}btn-disponible{% else %}btn-ocupada{% endif %}">
                     {{ mesa.get_estado_display }}
                 </a>
+                <div style="margin-top: 1rem">
+                {% if mesa.estado == 'OCUPADA' %}
+                <form method="post" action="{% url 'cobrar_mesa' mesa.id %}" class="mt-2">
+                    {% csrf_token %}
+                    
+                    <div class="mb-2">
+                        <strong>Método de pago:</strong>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodo_pago" id="efectivo{{ mesa.id }}" value="EFECTIVO" checked>
+                            <label class="form-check-label" for="efectivo{{ mesa.id }}">Efectivo</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodo_pago" id="tarjeta{{ mesa.id }}" value="TARJETA">
+                            <label class="form-check-label" for="tarjeta{{ mesa.id }}">Tarjeta</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success btn-sm" 
+                            onclick="return confirm('¿Confirmar cobro de Mesa {{ mesa.numero }} por ${{ mesa.total_pedidos|default:'0' }}?')">
+                        Cobrar Cuenta
+                    </button>
+                </form>
+                {% endif %}
+                </div>
             </div>
         {% endfor %}
     </div>

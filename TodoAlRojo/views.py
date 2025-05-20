@@ -7,7 +7,7 @@ from pyexpat.errors import messages
 
 from TodoAlRojo.models import *
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario, ProductoAdminFormulario
-
+from django.db.models import Sum
 
 def go_home_page(request):
     return render(request, 'home.html')
@@ -49,9 +49,24 @@ def go_AdminCarta_page(request):
 
 #FUNCIONES
 def cargarTablaMesas(request):
-    mesas = Mesa.objects.all().order_by('numero')
-    return render(request, 'Mesas.html', {'mesas': mesas})
+    mesas = Mesa.objects.all().annotate(
+        total_pedidos=Sum('pedido__total')
+    )
+    pedidos = Pedido.objects.all()
+    return render(request, 'Mesas.html', {'mesas': mesas, 'pedidos': pedidos})
 
+
+def cobrar_mesa(request, mesa_id):
+    mesa = get_object_or_404(Mesa, id=mesa_id)
+
+    pedidos = mesa.pedido_set.all()
+
+    pedidos.delete()
+
+    mesa.estado = 'DISPONIBLE'
+    mesa.save()
+
+    return redirect('mesas')
 def pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'Pedidos.html', {"pedidos": pedidos})

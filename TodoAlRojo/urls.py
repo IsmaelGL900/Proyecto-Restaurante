@@ -16,6 +16,7 @@ urlpatterns = [
     path('pedidos/cambiar_estado/<int:pedido_id>/', cambiar_estado_pedido, name='cambiar_estado_pedido'),
 
     path('GestionCamarero/Mesas/', cargarTablaMesas, name='mesas'),
+    path('GestionCamarero/Mesas/cobrar/<int:mesa_id>/', views.cobrar_mesa, name='cobrar_mesa'),
     path('GestionCamarero/Mesas/cambiar-estado/<int:mesa_id>/', cambiar_estado, name='cambiar_estado'),
     path('login/', loguearse, name="login"),
     path('login/registrarse/',registrar_usuario, name="registrarse"),
