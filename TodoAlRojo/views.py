@@ -47,9 +47,12 @@ def go_AdminCarta_page(request):
     productos = Producto.objects.all()
     return render(request, 'AdministrarCarta.html', {'productos': productos})
 
+def go_AdminMesas_page(request):
+    mesas = Mesa.objects.all().order_by('numero')
+    return render(request, 'AdministrarMesas.html', {'mesas': mesas})
 #FUNCIONES
 def cargarTablaMesas(request):
-    mesas = Mesa.objects.all().annotate(
+    mesas = Mesa.objects.all().order_by('numero').annotate(
         total_pedidos=Sum('pedido__total')
     )
     pedidos = Pedido.objects.all()
@@ -130,6 +133,26 @@ def añadir_producto(request):
         form = ProductoAdminFormulario()
 
     return render(request, "AñadirProducto.html", {'form': form})
+
+
+def agregar_mesa(request):
+    ultima_mesa = Mesa.objects.order_by('-numero').first()
+    nuevo_numero = (ultima_mesa.numero + 1) if ultima_mesa else 1
+
+    Mesa.objects.create(
+        numero=nuevo_numero,
+        estado='DISPONIBLE'
+    )
+    return redirect('AdminMesas')
+
+
+def eliminar_mesa(request):
+    ultima_mesa = Mesa.objects.order_by('-numero').first()
+    if ultima_mesa:
+        numero = ultima_mesa.numero
+        ultima_mesa.delete()
+
+    return redirect('AdminMesas')
 
 #CARTA Y PEDIDOS
 def cargar_productos(request):
