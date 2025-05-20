@@ -77,9 +77,10 @@ def modificar_cuenta(request, usuario_id):
         # Procesar el formulario de modificación
         form = RegistroAdminFormulario(request.POST, instance=usuario)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Cuenta modificada correctamente')
-            return redirect('nombre_de_tu_vista_de_listado')
+            usuario_nuevo = form.save(commit=False)
+            usuario_nuevo.set_password(form.cleaned_data['password'])
+            usuario_nuevo.save()
+            return redirect('cuentas')
     else:
         form = RegistroAdminFormulario(instance=usuario)
 
