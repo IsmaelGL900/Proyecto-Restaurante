@@ -23,5 +23,7 @@ urlpatterns = [
     path('GestionCamarero/', go_GestionCamarero_page , name="GestionCamarero"),
     path('GestionAdministrador/', go_GestionAdministrador_page, name="GestionAdmin"),
     path('GestionAdministrador/Cuentas/', go_cuentas_page, name="cuentas"),
+    path('GestionAdministrador/Cuentas/eliminar-cuenta/<int:usuario_id>/', views.eliminar_cuenta, name='eliminar_cuenta'),
+    path('GestionAdministrador/Cuentas/modificar-cuenta/<int:usuario_id>/', views.modificar_cuenta, name='modificar_cuenta'),
     path('GestionAdministrador/Cuentas/registrarse/',registrar_usuario_admin, name="registrarse_admin"),
 ]

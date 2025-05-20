@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
+from pyexpat.errors import messages
+
 from TodoAlRojo.models import *
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario
 
@@ -60,6 +62,31 @@ def cambiar_estado(request, mesa_id):
         })
     return redirect('mesas')
 
+
+def eliminar_cuenta(request, usuario_id):
+    if request.method == 'POST':
+        usuario = get_object_or_404(Usuario, id=usuario_id)
+        usuario.delete()
+        return redirect('cuentas')  # Reemplaza con el nombre de tu URL de listado
+    return redirect('cuentas')
+
+def modificar_cuenta(request, usuario_id):
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+
+    if request.method == 'POST':
+        # Procesar el formulario de modificación
+        form = RegistroAdminFormulario(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cuenta modificada correctamente')
+            return redirect('nombre_de_tu_vista_de_listado')
+    else:
+        form = RegistroAdminFormulario(instance=usuario)
+
+    return render(request, 'AdminModificarCuenta.html', {
+        'form': form,
+        'usuario': usuario
+    })
 #CARTA Y PEDIDOS
 def cargar_productos(request):
     productos = Producto.objects.all()
