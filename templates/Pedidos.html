@@ -65,7 +65,7 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h3 class="card-title">Pedido #{{ forloop.counter }}</h3>
-                            <p><strong>Camarero:</strong> {{ pedido.cliente.nombre }}</p>
+                            <p><strong>Camarero:</strong> {{ pedido.camarero.nombre }}</p>
                             <p><strong>Mesa:</strong> {{ pedido.mesa.numero }}</p>
                             <p><strong>Fecha:</strong> {{ pedido.fecha|date:"d/m/Y H:i" }}</p>
                             <p><strong>Estado:</strong> {{ pedido.get_estado_display }}</p>

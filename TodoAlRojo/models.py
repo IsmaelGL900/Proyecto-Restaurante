@@ -105,7 +105,7 @@ class Pedido(models.Model):
         ('ENTREGADO', 'Entregado'),
     ]
 
-    cliente = models.ForeignKey('Usuario', on_delete=models.CASCADE, limit_choices_to={'rol': 'cliente'}, related_name='pedidos_como_cliente')
+    cliente = models.ForeignKey('Usuario', null=True, blank=True, on_delete=models.SET_NULL, limit_choices_to={'rol': 'cliente'}, related_name='pedidos_como_cliente')
     mesa = models.ForeignKey(Mesa, on_delete=models.CASCADE)
     camarero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'camarero'}, on_delete= models.CASCADE, related_name='pedidos_como_camarero', null=True, blank=True)
     cocinero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'cocinero'}, on_delete= models.CASCADE, related_name='pedidos_como_cocinero', null=True, blank=True)

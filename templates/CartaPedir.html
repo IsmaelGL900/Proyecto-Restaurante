@@ -179,6 +179,15 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="cliente_id">Selecciona cliente:</label>
+                            <select class="form-select" id="cliente_id" name="cliente_id">
+                                <option value="">-- Cliente sin cuenta --</option>
+                                {% for cliente in clientes %}
+                                    <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-success btn-sm">Hacer Pedido</button>
                     </form>
                 {% else %}

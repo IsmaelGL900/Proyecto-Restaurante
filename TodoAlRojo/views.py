@@ -163,7 +163,8 @@ def carta(request):
     productos = Producto.objects.all()
     carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
     mesas = Mesa.objects.filter(estado='OCUPADA')
-    return render(request, 'CartaPedir.html', {'productos': productos, 'carrito': carrito, 'mesas': mesas})
+    clientes = Usuario.objects.filter(rol='cliente')
+    return render(request, 'CartaPedir.html', {'productos': productos, 'carrito': carrito, 'mesas': mesas, 'clientes': clientes})
 
 @login_required
 def agregar_a_carrito(request, producto_id):
@@ -198,22 +199,26 @@ def hacer_pedido(request):
     if request.method == 'POST':
         carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
         mesa_id = request.POST.get('mesa_id')
+        cliente_id = request.POST.get('cliente_id')
         mesa = get_object_or_404(Mesa, id=mesa_id)
 
         if not carrito or not carrito.items.exists():
             return redirect('cartapedir')
 
-        # Calcular total para el pedido
-        total_pedido = carrito.total
+        # Obtener cliente si se seleccionó uno
+        cliente = None
+        if cliente_id:
+            cliente = get_object_or_404(Usuario, id=cliente_id)
 
-        # Crear pedido con total
+        # Crear pedido
         pedido = Pedido.objects.create(
-            cliente=request.user,
+            camarero=request.user,  # El usuario actual es el camarero
+            cliente=cliente,        # Puede ser None si no se selecciona cliente
             mesa=mesa,
-            total=total_pedido
+            total=carrito.total
         )
 
-        # Copiar ítems al pedido
+        # Copiar ítems del carrito al pedido
         for item in carrito.items.all():
             ItemPedido.objects.create(
                 pedido=pedido,
@@ -222,7 +227,7 @@ def hacer_pedido(request):
                 precio_unitario=item.producto.precio
             )
 
-        # Vaciar y desactivar carrito
+        # Vaciar el carrito
         carrito.items.all().delete()
         carrito.activo = False
         carrito.save()
@@ -230,7 +235,6 @@ def hacer_pedido(request):
         return redirect('carta_pedir')
 
     return redirect('cartapedir')
-
 #AUTENTIFICACIÓN
 def es_admin (usuario):
     if not usuario.is_authenticated or not usuario.rol == 'admin':
