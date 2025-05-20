@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from pyexpat.errors import messages
 
 from TodoAlRojo.models import *
-from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario
+from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario, ProductoAdminFormulario
 
 
 def go_home_page(request):
@@ -42,6 +42,10 @@ def go_GestionAdministrador_page(request):
 def go_cuentas_page(request):
     usuarios = Usuario.objects.all()
     return render(request, 'AdministrarCuentas.html',{'usuarios': usuarios})
+
+def go_AdminCarta_page(request):
+    productos = Producto.objects.all()
+    return render(request, 'AdministrarCarta.html', {'productos': productos})
 
 #FUNCIONES
 def cargarTablaMesas(request):
@@ -100,11 +104,45 @@ def modificar_cuenta(request, usuario_id):
         'form': form,
         'usuario': usuario
     })
+
+def añadir_producto(request):
+    if request.method == 'POST':
+        form = ProductoAdminFormulario(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('AdminCarta')
+    else:
+        form = ProductoAdminFormulario()
+
+    return render(request, "AñadirProducto.html", {'form': form})
+
 #CARTA Y PEDIDOS
 def cargar_productos(request):
     productos = Producto.objects.all()
     return render(request, 'Carta.html', {'productos': productos})
 
+def eliminar_producto(request, producto_id):
+    if request.method == 'POST':
+        producto = get_object_or_404(Producto, id=producto_id)
+        producto.delete()
+    return redirect('AdminCarta')
+
+
+def modificar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+
+    if request.method == 'POST':
+        form = ProductoAdminFormulario(request.POST, request.FILES, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('AdminCarta')
+    else:
+        form = ProductoAdminFormulario(instance=producto)
+
+    return render(request, 'AñadirProducto.html', {
+        'form': form,
+        'producto': producto,
+    })
 @login_required
 def carta(request):
     productos = Producto.objects.all()

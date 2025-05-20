@@ -69,13 +69,8 @@ class RegistroAdminFormulario(forms.ModelForm):
 class ProductoAdminFormulario(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = '__all__'
+        fields =  ['nombre', 'precio', 'tipo', 'ingredientes']
         widgets = {
-            'imagen': forms.FileInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Imagen',
-                'id': 'imagen'
-            }),
             'nombre': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Nombre de Producto',
@@ -83,14 +78,19 @@ class ProductoAdminFormulario(forms.ModelForm):
             }),
             'precio': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Precio',
+                'placeholder': 'Precio (Ej. 0.00)',
                 'id': 'precio'
             }),
             'tipo': forms.Select(attrs={
                 'class': 'form-control',
                 'placeholder': 'Tipo',
                 'id': 'tipo'
-            })
+            }),
+            'ingredientes': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ingredientes',
+                'id': 'ingredientes'
+            }),
         }
 
 class MesaAdminFormulario(forms.ModelForm):
