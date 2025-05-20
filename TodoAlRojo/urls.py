@@ -12,7 +12,8 @@ urlpatterns = [
     path('cartapedir/agregar-a-carrito/<int:producto_id>/', agregar_a_carrito, name='agregar_a_carrito'),
     path('cartapedir/eliminar-item-carrito/<int:item_id>/', eliminar_item_carrito, name='eliminar_item_carrito'),
     path('hacer-pedido/', hacer_pedido, name='hacer_pedido'),
-
+    path('pedidos/', pedidos, name='pedidos'),
+    path('pedidos/cambiar_estado/<int:pedido_id>/', cambiar_estado_pedido, name='cambiar_estado_pedido'),
 
     path('GestionCamarero/Mesas/', cargarTablaMesas, name='mesas'),
     path('GestionCamarero/Mesas/cambiar-estado/<int:mesa_id>/', cambiar_estado, name='cambiar_estado'),
