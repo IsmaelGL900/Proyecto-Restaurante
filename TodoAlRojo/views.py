@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
@@ -9,6 +9,25 @@ from TodoAlRojo.models import *
 from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario, ProductoAdminFormulario
 from django.db.models import Sum
 
+#AUTENTIFICACIÓN
+def es_admin (usuario):
+    if usuario.is_authenticated and usuario.rol == 'admin':
+        return True
+    else:
+        raise PermissionDenied
+
+def es_camarero (usuario):
+    if usuario.is_authenticated and (usuario.rol == 'camarero' or usuario.rol == 'admin'):
+        return True
+    else:
+        raise PermissionDenied
+
+
+def es_cocinero (usuario):
+    if usuario.is_authenticated and (usuario.rol == 'cocinero' or usuario.rol == 'admin'):
+        return True
+    else:
+        raise PermissionDenied
 def go_home_page(request):
     return render(request, 'home.html')
 
@@ -30,27 +49,35 @@ def go_registrarse_page(request):
 def go_gestion_page(request):
     return render(request, 'Gestion.html')
 
+@user_passes_test(es_cocinero)
 def go_GestionCocinero_page(request):
     return render(request, 'GestionCocinero.html')
 
+@user_passes_test(es_camarero)
 def go_GestionCamarero_page(request):
     return render(request, 'GestionCamarero.html')
 
+@user_passes_test(es_admin)
 def go_GestionAdministrador_page(request):
     return render(request, 'GestionAdmin.html')
 
+@user_passes_test(es_admin)
 def go_cuentas_page(request):
     usuarios = Usuario.objects.all()
     return render(request, 'AdministrarCuentas.html',{'usuarios': usuarios})
 
+@user_passes_test(es_admin)
 def go_AdminCarta_page(request):
     productos = Producto.objects.all()
     return render(request, 'AdministrarCarta.html', {'productos': productos})
 
+@user_passes_test(es_admin)
 def go_AdminMesas_page(request):
     mesas = Mesa.objects.all().order_by('numero')
     return render(request, 'AdministrarMesas.html', {'mesas': mesas})
+
 #FUNCIONES
+@user_passes_test(es_camarero)
 def cargarTablaMesas(request):
     mesas = Mesa.objects.all().order_by('numero').annotate(
         total_pedidos=Sum('pedido__total')
@@ -59,6 +86,7 @@ def cargarTablaMesas(request):
     return render(request, 'Mesas.html', {'mesas': mesas, 'pedidos': pedidos})
 
 
+@user_passes_test(es_camarero)
 def cobrar_mesa(request, mesa_id):
     mesa = get_object_or_404(Mesa, id=mesa_id)
 
@@ -70,10 +98,13 @@ def cobrar_mesa(request, mesa_id):
     mesa.save()
 
     return redirect('mesas')
+
+@user_passes_test(es_cocinero)
 def pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'Pedidos.html', {"pedidos": pedidos})
 
+@user_passes_test(es_cocinero)
 def cambiar_estado_pedido(request, pedido_id):
     if request.method == 'POST':
         pedido = get_object_or_404(Pedido, id=pedido_id)
@@ -83,6 +114,7 @@ def cambiar_estado_pedido(request, pedido_id):
             pedido.save()
     return redirect('pedidos')
 
+@user_passes_test(es_camarero)
 def cambiar_estado(request, mesa_id):
     mesa = get_object_or_404(Mesa, id=mesa_id)
     mesa.estado = 'DISPONIBLE' if mesa.estado == 'OCUPADA' else 'OCUPADA'
@@ -96,7 +128,7 @@ def cambiar_estado(request, mesa_id):
         })
     return redirect('mesas')
 
-
+@user_passes_test(es_admin)
 def eliminar_cuenta(request, usuario_id):
     if request.method == 'POST':
         usuario = get_object_or_404(Usuario, id=usuario_id)
@@ -104,6 +136,7 @@ def eliminar_cuenta(request, usuario_id):
         return redirect('cuentas')  # Reemplaza con el nombre de tu URL de listado
     return redirect('cuentas')
 
+@user_passes_test(es_admin)
 def modificar_cuenta(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
@@ -123,6 +156,7 @@ def modificar_cuenta(request, usuario_id):
         'usuario': usuario
     })
 
+@user_passes_test(es_admin)
 def añadir_producto(request):
     if request.method == 'POST':
         form = ProductoAdminFormulario(request.POST)
@@ -134,7 +168,7 @@ def añadir_producto(request):
 
     return render(request, "AñadirProducto.html", {'form': form})
 
-
+@user_passes_test(es_admin)
 def agregar_mesa(request):
     ultima_mesa = Mesa.objects.order_by('-numero').first()
     nuevo_numero = (ultima_mesa.numero + 1) if ultima_mesa else 1
@@ -145,7 +179,7 @@ def agregar_mesa(request):
     )
     return redirect('AdminMesas')
 
-
+@user_passes_test(es_admin)
 def eliminar_mesa(request):
     ultima_mesa = Mesa.objects.order_by('-numero').first()
     if ultima_mesa:
@@ -155,17 +189,19 @@ def eliminar_mesa(request):
     return redirect('AdminMesas')
 
 #CARTA Y PEDIDOS
+
 def cargar_productos(request):
     productos = Producto.objects.all()
     return render(request, 'Carta.html', {'productos': productos})
 
+@user_passes_test(es_admin)
 def eliminar_producto(request, producto_id):
     if request.method == 'POST':
         producto = get_object_or_404(Producto, id=producto_id)
         producto.delete()
     return redirect('AdminCarta')
 
-
+@user_passes_test(es_admin)
 def modificar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
 
@@ -181,7 +217,8 @@ def modificar_producto(request, producto_id):
         'form': form,
         'producto': producto,
     })
-@login_required
+
+@user_passes_test(es_camarero)
 def carta(request):
     productos = Producto.objects.all()
     carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
@@ -189,7 +226,7 @@ def carta(request):
     clientes = Usuario.objects.filter(rol='cliente')
     return render(request, 'CartaPedir.html', {'productos': productos, 'carrito': carrito, 'mesas': mesas, 'clientes': clientes})
 
-@login_required
+@user_passes_test(es_camarero)
 def agregar_a_carrito(request, producto_id):
     cliente = request.user
     producto = get_object_or_404(Producto, id=producto_id)
@@ -210,14 +247,14 @@ def agregar_a_carrito(request, producto_id):
 
     return redirect('carta_pedir')
 
-@login_required
+@user_passes_test(es_camarero)
 def eliminar_item_carrito(request, item_id):
     item = ItemCarrito.objects.get(id=item_id)
     if item.carrito.cliente == request.user:
         item.delete()
     return redirect('carta_pedir')
 
-@login_required
+@user_passes_test(es_camarero)
 def hacer_pedido(request):
     if request.method == 'POST':
         carrito = Carrito.objects.filter(cliente=request.user, activo=True).first()
@@ -258,21 +295,6 @@ def hacer_pedido(request):
         return redirect('carta_pedir')
 
     return redirect('cartapedir')
-#AUTENTIFICACIÓN
-def es_admin (usuario):
-    if not usuario.is_authenticated or not usuario.rol == 'admin':
-        raise PermissionDenied
-    return True
-
-def es_camarero (usuario):
-    if not usuario.is_authenticated or not usuario.rol == 'camarero' or not usuario.role == 'admin':
-        raise PermissionDenied
-    return True
-
-def es_cocinero (usuario):
-    if not usuario.is_authenticated or not usuario.rol == 'cocinero' or not usuario.role == 'admin':
-        raise PermissionDenied
-    return True
 
 #REGISTRO Y LOGIN
 def registrar_usuario(request):
