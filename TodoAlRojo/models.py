@@ -128,3 +128,29 @@ class ItemPedido(models.Model):
 
     def __str__(self):
         return f"{self.cantidad}x {self.producto.nombre} (${self.subtotal})"
+
+
+class PedidoTerminado(models.Model):
+    cliente = models.CharField(max_length=250, null=True, blank=True)
+    mesa_numero = models.IntegerField()
+    camarero = models.CharField(max_length=250, null=True, blank=True)
+    cocinero = models.CharField(max_length=250, null=True, blank=True)
+    fecha = models.DateTimeField()
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"PedidoTerminado #{self.id} - {self.cliente} - Mesa {self.mesa_numero}"
+
+
+class ItemPedidoTerminado(models.Model):
+    pedido_terminado = models.ForeignKey(PedidoTerminado, related_name='items', on_delete=models.CASCADE)
+    producto = models.CharField(max_length=100)
+    cantidad = models.PositiveIntegerField()
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def subtotal(self):
+        return self.precio_unitario * self.cantidad
+
+    def __str__(self):
+        return f"{self.cantidad}x {self.producto} (${self.subtotal})"

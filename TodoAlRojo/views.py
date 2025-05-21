@@ -85,12 +85,31 @@ def cargarTablaMesas(request):
     pedidos = Pedido.objects.all()
     return render(request, 'Mesas.html', {'mesas': mesas, 'pedidos': pedidos})
 
+def mover_a_pedidos_terminados(pedido):
+    terminado = PedidoTerminado.objects.create(
+        cliente=pedido.cliente.id if pedido.cliente else None,
+        mesa_numero=pedido.mesa.numero,
+        camarero=pedido.camarero.id if pedido.camarero else None,
+        cocinero=pedido.cocinero.id if pedido.cocinero else None,
+        fecha=pedido.fecha,
+        total=pedido.total
+    )
+
+    for item in pedido.items.all():
+        ItemPedidoTerminado.objects.create(
+            pedido_terminado=terminado,
+            producto=item.producto.id,
+            cantidad=item.cantidad,
+            precio_unitario=item.precio_unitario
+        )
 
 @user_passes_test(es_camarero)
 def cobrar_mesa(request, mesa_id):
     mesa = get_object_or_404(Mesa, id=mesa_id)
-
     pedidos = mesa.pedido_set.all()
+
+    for pedido in pedidos:
+        mover_a_pedidos_terminados(pedido)
 
     pedidos.delete()
 
@@ -295,6 +314,7 @@ def hacer_pedido(request):
         return redirect('carta_pedir')
 
     return redirect('cartapedir')
+
 
 #REGISTRO Y LOGIN
 def registrar_usuario(request):
