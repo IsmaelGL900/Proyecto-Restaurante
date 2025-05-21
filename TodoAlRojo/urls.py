@@ -7,6 +7,7 @@ urlpatterns = [
     path('', go_home_page , name="home"),
     path('', logout_usuario, name="logout"),
     path('home/', go_homeLogIn_page, name="home-login"),
+    path('home/personalizacion/', personalizar, name="personalizar"),
     path('home/carta', cargar_productos, name="carta"),
     path('cartapedir/', carta, name='carta_pedir'),
     path('cartapedir/agregar-a-carrito/<int:producto_id>/', agregar_a_carrito, name='agregar_a_carrito'),
