@@ -53,8 +53,11 @@ def go_gestion_page(request):
 def carta_SinCuenta(request):
     productos = Producto.objects.all()
     return render(request, 'Carta.html', {'productos': productos})
-
-
+@login_required
+def go_historial_page(request):
+    pedidos = Pedido.objects.filter(cliente=request.user).order_by('-fecha')
+    pedidos_terminados = PedidoTerminado.objects.filter(cliente=request.user).order_by('-fecha')
+    return render(request, 'Historial.html', {"pedidos": pedidos, "pedidos_terminados": pedidos_terminados})
 @user_passes_test(es_cocinero)
 def go_GestionCocinero_page(request):
     return render(request, 'GestionCocinero.html')
@@ -93,10 +96,10 @@ def cargarTablaMesas(request):
 
 def mover_a_pedidos_terminados(pedido):
     terminado = PedidoTerminado.objects.create(
-        cliente=pedido.cliente.id if pedido.cliente else None,
-        mesa_numero=pedido.mesa.numero,
-        camarero=pedido.camarero.id if pedido.camarero else None,
-        cocinero=pedido.cocinero.id if pedido.cocinero else None,
+        cliente=pedido.cliente if pedido.cliente else None,
+        mesa_numero=pedido.mesa,
+        camarero=pedido.camarero if pedido.camarero else None,
+        cocinero=pedido.cocinero if pedido.cocinero else None,
         fecha=pedido.fecha,
         total=pedido.total
     )
@@ -104,7 +107,7 @@ def mover_a_pedidos_terminados(pedido):
     for item in pedido.items.all():
         ItemPedidoTerminado.objects.create(
             pedido_terminado=terminado,
-            producto=item.producto.id,
+            producto=item.producto,
             cantidad=item.cantidad,
             precio_unitario=item.precio_unitario
         )

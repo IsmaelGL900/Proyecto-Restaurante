@@ -96,7 +96,7 @@
 
                  <div class="total-mesa">
                     <strong>Total acumulado:</strong>
-                    ${{ mesa.total_pedidos|default:"0"|floatformat:2 }}
+                    {{ mesa.total_pedidos|default:"0"|floatformat:2 }}€
                 </div>
                 <br>
                 <a href="{% url 'cambiar_estado' mesa.id %}" class="btn-estado {% if mesa.estado == 'DISPONIBLE' %}btn-disponible{% else %}btn-ocupada{% endif %}">

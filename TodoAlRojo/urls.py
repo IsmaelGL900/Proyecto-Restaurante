@@ -8,6 +8,7 @@ urlpatterns = [
     path('', logout_usuario, name="logout"),
     path('home/', go_homeLogIn_page, name="home-login"),
     path('home/carta/', cargar_productos, name="carta_LogIn"),
+    path('home/historial/', go_historial_page, name="historial"),
     path('home/personalizacion/', personalizar, name="personalizar"),
     path('carta/', carta_SinCuenta, name="carta_SinCuenta"),
     path('cartapedir/', carta, name='carta_pedir'),

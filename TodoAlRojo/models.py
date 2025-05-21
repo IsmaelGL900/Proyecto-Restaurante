@@ -131,20 +131,20 @@ class ItemPedido(models.Model):
 
 
 class PedidoTerminado(models.Model):
-    cliente = models.CharField(max_length=250, null=True, blank=True)
-    mesa_numero = models.IntegerField()
-    camarero = models.CharField(max_length=250, null=True, blank=True)
-    cocinero = models.CharField(max_length=250, null=True, blank=True)
+    cliente = models.ForeignKey('Usuario', related_name='pedidos_terminados_cliente',limit_choices_to={'rol': 'cliente'}, on_delete=models.SET_NULL, null=True, blank=True)
+    mesa_numero = models.ForeignKey(Mesa,on_delete=models.CASCADE, null=True, blank=True)
+    camarero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'camarero'}, related_name='pedidos_terminados_camarero', on_delete=models.SET_NULL, null=True, blank=True)
+    cocinero = models.ForeignKey('Usuario', limit_choices_to={'rol': 'cocinero'}, related_name='pedidos_terminados_cocinero', on_delete=models.SET_NULL, null=True, blank=True)
     fecha = models.DateTimeField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"PedidoTerminado #{self.id} - {self.cliente} - Mesa {self.mesa_numero}"
+        return f"PedidoTerminado #{self.id} - {self.cliente.nombre if self.cliente else 'Sin cliente'} - {self.mesa}"
 
 
 class ItemPedidoTerminado(models.Model):
     pedido_terminado = models.ForeignKey(PedidoTerminado, related_name='items', on_delete=models.CASCADE)
-    producto = models.CharField(max_length=100)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)  # Ahora es ForeignKey
     cantidad = models.PositiveIntegerField()
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -153,4 +153,4 @@ class ItemPedidoTerminado(models.Model):
         return self.precio_unitario * self.cantidad
 
     def __str__(self):
-        return f"{self.cantidad}x {self.producto} (${self.subtotal})"
+        return f"{self.cantidad}x {self.producto.nombre} (${self.subtotal})"
