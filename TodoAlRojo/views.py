@@ -50,6 +50,11 @@ def go_registrarse_page(request):
 def go_gestion_page(request):
     return render(request, 'Gestion.html')
 
+def carta_SinCuenta(request):
+    productos = Producto.objects.all()
+    return render(request, 'Carta.html', {'productos': productos})
+
+
 @user_passes_test(es_cocinero)
 def go_GestionCocinero_page(request):
     return render(request, 'GestionCocinero.html')
@@ -228,7 +233,7 @@ def eliminar_mesa(request):
 
 def cargar_productos(request):
     productos = Producto.objects.all()
-    return render(request, 'Carta.html', {'productos': productos})
+    return render(request, 'Carta-LogIn.html', {'productos': productos})
 
 @user_passes_test(es_admin)
 def eliminar_producto(request, producto_id):
