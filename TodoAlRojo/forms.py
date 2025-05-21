@@ -110,3 +110,25 @@ class MesaAdminFormulario(forms.ModelForm):
             })
         }
 
+class PersonalizarForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['email', 'nombre' ,'password']
+        widgets = {
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Correo',
+                'id': 'email'
+            }),
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre de Usuario',
+                'id': 'nombre'
+            }),
+            'password': forms.PasswordInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contraseña',
+                'id': 'password'
+            })
+
+        }

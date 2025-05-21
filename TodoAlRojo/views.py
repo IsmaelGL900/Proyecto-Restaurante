@@ -6,7 +6,8 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from pyexpat.errors import messages
 
 from TodoAlRojo.models import *
-from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario, ProductoAdminFormulario
+from TodoAlRojo.forms import RegistroFormulario, LoginFormulario, RegistroAdminFormulario, ProductoAdminFormulario, \
+    PersonalizarForm
 from django.db.models import Sum
 
 #AUTENTIFICACIÓN
@@ -174,6 +175,22 @@ def modificar_cuenta(request, usuario_id):
         'form': form,
         'usuario': usuario
     })
+
+
+
+@login_required
+def personalizar(request):
+    if request.method == 'POST':
+        form = PersonalizarForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            usuario_nuevo = form.save(commit=False)
+            usuario_nuevo.set_password(form.cleaned_data['password'])
+            usuario_nuevo.save()
+            return redirect('home')
+    else:
+        form = PersonalizarForm(instance=request.user)
+
+    return render(request, 'Personalizacion.html', {'form': form})
 
 @user_passes_test(es_admin)
 def añadir_producto(request):
