@@ -85,6 +85,11 @@ def go_AdminMesas_page(request):
     mesas = Mesa.objects.all().order_by('numero')
     return render(request, 'AdministrarMesas.html', {'mesas': mesas})
 
+def ver_pedidos(request):
+    pedidos = Pedido.objects.all()
+    pedidos_terminados = PedidoTerminado.objects.all()
+    return render(request, 'PedidosAdmin.html', {'pedidos': pedidos, 'pedidos_terminados': pedidos_terminados})
+
 #FUNCIONES
 @user_passes_test(es_camarero)
 def cargarTablaMesas(request):

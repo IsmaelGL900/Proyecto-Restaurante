@@ -17,6 +17,7 @@ urlpatterns = [
     path('hacer-pedido/', hacer_pedido, name='hacer_pedido'),
     path('pedidos/', pedidos, name='pedidos'),
     path('pedidos/cambiar_estado/<int:pedido_id>/', cambiar_estado_pedido, name='cambiar_estado_pedido'),
+    path('PedidosAdmin/', ver_pedidos, name='pedidos_admin'),
 
     path('GestionCamarero/Mesas/', cargarTablaMesas, name='mesas'),
     path('GestionCamarero/Mesas/cobrar/<int:mesa_id>/', views.cobrar_mesa, name='cobrar_mesa'),
