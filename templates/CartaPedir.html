@@ -87,6 +87,9 @@
     </div>
     <div id="centro">
         <div id="izquierda">
+            <button class="btn btn-danger" style="margin-top: 2rem;padding: 1rem;" onclick="window.location.href='{% url 'pedidosCamarero' %}'" >
+                PEDIDOS REALIZADOS
+            </button>
             <h1 class="titulos">HAMBURGUESAS</h1>
         {% for p in productos %}
             {% if p.tipo == 'HAMBURGUESA' %}

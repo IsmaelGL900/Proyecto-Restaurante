@@ -53,6 +53,84 @@ def go_gestion_page(request):
 def carta_SinCuenta(request):
     productos = Producto.objects.all()
     return render(request, 'Carta.html', {'productos': productos})
+
+@user_passes_test(es_camarero)
+def go_pedidoscamarero_page(request):
+    pedidos = Pedido.objects.all().order_by('-fecha')
+    return render(request, 'PedidoCamarero.html', {'pedidos': pedidos})
+
+@user_passes_test(es_camarero)
+def editar_pedido(request, pedido_id):
+    # Verificar que el usuario es camarero
+    if request.user.rol != 'camarero':
+        return redirect('GestionCamarero')
+
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    productos = Producto.objects.all()
+    mesas = Mesa.objects.all()
+
+    # Obtener clientes (usuarios con rol 'cliente')
+    clientes = Usuario.objects.filter(rol='cliente')
+
+    if request.method == 'POST':
+        # Procesar eliminación de items
+        if 'eliminar_item' in request.POST:
+            item_id = request.POST.get('eliminar_item')
+            ItemPedido.objects.filter(id=item_id, pedido=pedido).delete()
+            return redirect('editar_pedido', pedido_id=pedido.id)
+
+        # Procesar adición de nuevo producto
+        elif 'agregar_producto' in request.POST:
+            producto_id = request.POST.get('producto')
+            cantidad = int(request.POST.get('cantidad', 1))
+
+            producto = get_object_or_404(Producto, id=producto_id)
+
+            # Crear o actualizar item del pedido
+            item, created = ItemPedido.objects.get_or_create(
+                pedido=pedido,
+                producto=producto,
+                defaults={
+                    'cantidad': cantidad,
+                    'precio_unitario': producto.precio
+                }
+            )
+
+            if not created:
+                item.cantidad += cantidad
+                item.save()
+
+            return redirect('editar_pedido', pedido_id=pedido.id)
+
+        # Procesar actualización de datos del pedido
+        elif 'actualizar_pedido' in request.POST:
+            mesa_id = request.POST.get('mesa')
+            cliente_id = request.POST.get('cliente')
+            estado = request.POST.get('estado')
+
+            pedido.mesa = get_object_or_404(Mesa, id=mesa_id)
+            pedido.estado = estado
+
+            if cliente_id:
+                pedido.cliente = get_object_or_404(Usuario, id=cliente_id)
+            else:
+                pedido.cliente = None
+
+            pedido.save()
+
+            # Recalcular total del pedido
+            total = sum(item.subtotal for item in pedido.items.all())
+            pedido.total = total
+            pedido.save()
+
+            return redirect('GestionCamarero')
+
+    return render(request, 'EditarPedidoCamarero.html', {
+        'pedido': pedido,
+        'productos': productos,
+        'mesas': mesas,
+        'clientes': clientes,
+    })
 @login_required
 def go_historial_page(request):
     pedidos = Pedido.objects.filter(cliente=request.user).order_by('-fecha')
